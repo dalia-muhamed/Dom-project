@@ -7,28 +7,15 @@ const userInputs = modal.querySelectorAll('input');
 const entryTextElement = document.getElementById('entry-text');
 const deleteModelDeletion = document.getElementById('delete-modal');
 
-const movies = [];
-console.log(userInputs);
+let movies = [];
 
 function deleteMovie(movieId) {
-  const ids = [];
-  ids.push(movieId);
-  console.log(ids);
-  let movieIndex = 0;
-  for (const movie of movies) {
-    if (movieId === movie.id) {
-      break;
-    }
-    movieIndex++;
-  }
-  movies.splice(movieIndex, 1);
-  const rootList = document.getElementById('movie-list');
-  rootList.children[movieIndex].remove();
+  document.getElementById(movieId).parentElement.remove();
+  movies = movies.filter(movie => movie.id != movieId);
   canselDeletionModalHandler();
   updateUi();
 }
 function canselDeletionModalHandler() {
-  console.log('deleteModelDeletion:', deleteModelDeletion);
   deleteModelDeletion.classList.remove('visible');
 
   toggleBackdrop();
@@ -54,7 +41,7 @@ function renderMovies(id, title, imageUrl, rating) {
   newLi.classList.add('movie-element');
   //  newLi.className='movie-element';
   newLi.innerHTML = `
-  <div class="movie-element__image">
+  <div class="movie-element__image" id="${id}">
   <img src="${imageUrl}" alt="${title}">
    </div>
   <div class="movie-element__info">
@@ -110,7 +97,6 @@ function addMovieHandler() {
   };
   movies.push(newMovie);
   closeMovieModal();
-  console.log(movies);
   clearMovieInputs();
   renderMovies(newMovie.id, newMovie.title, newMovie.image, newMovie.rating);
   updateUi();
